@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import 'package:wordle/provider/userProv.dart' show UserProvider;
+//import 'package:wordle/provider/userProv.dart' show UserProvider;
 //import 'package:wordle/widgets/menuPage.dart' show MenuPage;
 
-class EntryPage extends StatefulWidget {
-  const EntryPage({super.key});
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({super.key});
 
   @override
-  State<EntryPage> createState() => _EntryPageState();
+  State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _EntryPageState extends State<EntryPage> {
+class _WelcomePageState extends State<WelcomePage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
 
@@ -43,19 +43,7 @@ class _EntryPageState extends State<EntryPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Animated Title
-                    Text(
-                          'WORDLE',
-                          style: Theme.of(context).textTheme.displayLarge
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 4,
-                              ),
-                        )
-                        .animate()
-                        .fadeIn(duration: 500.ms)
-                        .then(delay: 200.ms)
-                        .slideY(begin: -0.1, curve: Curves.easeOut),
-
+                    const _Title(),
                     SizedBox(height: screenHeight * 0.05),
 
                     // Name Input
@@ -83,50 +71,50 @@ class _EntryPageState extends State<EntryPage> {
                     SizedBox(height: screenHeight * 0.03),
 
                     // Submit Button with Loading State
-                    Selector<UserProvider, bool>(
-                          selector: (_, provider) => provider.isLoading,
+                    // Selector<UserProvider, bool>(
+                    //       selector: (_, provider) => provider.isLoading,
 
-                          builder: (context, isLoading, child) {
-                            return FilledButton.tonal(
-                              onPressed: isLoading
-                                  ? null
-                                  : () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        final isSucc = await context
-                                            .read<UserProvider>()
-                                            .getUserInfo(
-                                              _nameController.text,
-                                              context,
-                                            );
-                                        if (isSucc) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MenuPage(),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
+                    //       builder: (context, isLoading, child) {
+                    //         return FilledButton.tonal(
+                    //           onPressed: isLoading
+                    //               ? null
+                    //               : () async {
+                    //                   if (_formKey.currentState!.validate()) {
+                    //                     final isSucc = await context
+                    //                         .read<UserProvider>()
+                    //                         .getUserInfo(
+                    //                           _nameController.text,
+                    //                           context,
+                    //                         );
+                    //                     if (isSucc) {
+                    //                       Navigator.push(
+                    //                         context,
+                    //                         MaterialPageRoute(
+                    //                           builder: (context) =>
+                    //                               const MenuPage(),
+                    //                         ),
+                    //                       );
+                    //                     }
+                    //                   }
+                    //                 },
 
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: isLoading
-                                  ? const CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
-                                  : const Text('Continue'),
-                            );
-                          },
-                        )
-                        .animate()
-                        .fadeIn(delay: 400.ms)
-                        .slideY(begin: 0.1, curve: Curves.easeOut),
+                    //           style: FilledButton.styleFrom(
+                    //             minimumSize: const Size(double.infinity, 50),
+                    //             shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(12),
+                    //             ),
+                    //           ),
+                    //           child: isLoading
+                    //               ? const CircularProgressIndicator(
+                    //                   color: Colors.white,
+                    //                 )
+                    //               : const Text('Continue'),
+                    //         );
+                    //       },
+                    // )
+                    // .animate()
+                    // .fadeIn(delay: 400.ms)
+                    // .slideY(begin: 0.1, curve: Curves.easeOut),
                   ],
                 ),
               ),
@@ -135,5 +123,24 @@ class _EntryPageState extends State<EntryPage> {
         ),
       ),
     );
+  }
+}
+
+class _Title extends StatelessWidget {
+  const _Title();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+          'WELCOME',
+          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 4,
+          ),
+        )
+        .animate()
+        .fadeIn(duration: 500.ms)
+        .then(delay: 200.ms)
+        .slideY(begin: -0.1, curve: Curves.easeOut);
   }
 }
