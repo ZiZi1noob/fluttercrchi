@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
+import 'package:lottie/lottie.dart';
 //import 'package:wordle/provider/userProv.dart' show UserProvider;
 //import 'package:wordle/widgets/menuPage.dart' show MenuPage;
 
@@ -45,7 +45,13 @@ class _WelcomePageState extends State<WelcomePage> {
                     // Animated Title
                     const _Title(),
                     SizedBox(height: screenHeight * 0.05),
-
+                    Lottie.asset(
+                      'assets/lotties/CatMovement.lottie',
+                      width: 60,
+                      height: 60,
+                      repeat: true,
+                      frameRate: FrameRate(30),
+                    ),
                     // Name Input
                     TextFormField(
                           controller: _nameController,
@@ -126,18 +132,47 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 }
 
-class _Title extends StatelessWidget {
+class _Title extends StatefulWidget {
   const _Title();
 
   @override
+  State<_Title> createState() => __TitleState();
+}
+
+class __TitleState extends State<_Title> {
+  bool _isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Text(
-          'WELCOME',
-          style: TextStyle(fontFamily: 'Bitcount Grid Double', fontSize: 68),
-        )
-        .animate()
-        .fadeIn(duration: 500.ms)
-        .then(delay: 200.ms)
-        .slideY(begin: -0.1, curve: Curves.easeOut);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovering = true),
+      onExit: (_) => setState(() => _isHovering = false),
+      child:
+          Text(
+                'WELCOME',
+                style: TextStyle(
+                  fontFamily: 'Bitcount Grid Double',
+                  fontSize: 68,
+                  color: _isHovering
+                      ? Colors.blue
+                      : Colors.black, // Color change
+                  shadows: _isHovering
+                      ? [
+                          Shadow(
+                            blurRadius: 10,
+                            color: Colors.blue.withOpacity(0.5),
+                            offset: const Offset(0, 0),
+                          ),
+                        ]
+                      : null,
+                ),
+              )
+              .animate(
+                target: _isHovering ? 1 : 0.7,
+              ) // Animate based on hover state
+              .fadeIn(duration: 500.ms)
+              .then(delay: 200.ms)
+              .slideY(begin: -0.1, curve: Curves.easeOut),
+    );
   }
 }
