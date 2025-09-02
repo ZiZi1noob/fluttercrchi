@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:provider/provider.dart';
+
 //import 'package:wordle/provider/userProv.dart' show UserProvider;
 //import 'package:wordle/widgets/menuPage.dart' show MenuPage;
 
@@ -133,10 +133,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
           'WELCOME',
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 4,
-          ),
+          style: TextStyle(fontFamily: 'Bitcount Grid Double', fontSize: 68),
         )
         .animate()
         .fadeIn(duration: 500.ms)
