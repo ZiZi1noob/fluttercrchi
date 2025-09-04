@@ -14,73 +14,76 @@ class WelcomePage extends StatelessWidget {
     final isDesktop = screenWidth > 600;
 
     return Scaffold(
-      backgroundColor: Colors.white.withAlpha(200),
-      body: Center(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: isDesktop ? screenWidth * 0.5 : screenWidth * 0.9,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Animated Title
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [_Title(), _CatLottie()],
-                  ),
+      body: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
 
-                  _Username(),
-                  SizedBox(height: screenHeight * 0.03),
+        child: Center(
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: isDesktop ? screenWidth * 0.5 : screenWidth * 0.9,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Animated Title
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [_Title(), _CatLottie()],
+                    ),
 
-                  // Submit Button with Loading State
-                  // Selector<UserProvider, bool>(
-                  //       selector: (_, provider) => provider.isLoading,
+                    _Username(),
+                    SizedBox(height: screenHeight * 0.03),
 
-                  //       builder: (context, isLoading, child) {
-                  //         return FilledButton.tonal(
-                  //           onPressed: isLoading
-                  //               ? null
-                  //               : () async {
-                  //                   if (_formKey.currentState!.validate()) {
-                  //                     final isSucc = await context
-                  //                         .read<UserProvider>()
-                  //                         .getUserInfo(
-                  //                           _nameController.text,
-                  //                           context,
-                  //                         );
-                  //                     if (isSucc) {
-                  //                       Navigator.push(
-                  //                         context,
-                  //                         MaterialPageRoute(
-                  //                           builder: (context) =>
-                  //                               const MenuPage(),
-                  //                         ),
-                  //                       );
-                  //                     }
-                  //                   }
-                  //                 },
+                    // Submit Button with Loading State
+                    // Selector<UserProvider, bool>(
+                    //       selector: (_, provider) => provider.isLoading,
 
-                  //           style: FilledButton.styleFrom(
-                  //             minimumSize: const Size(double.infinity, 50),
-                  //             shape: RoundedRectangleBorder(
-                  //               borderRadius: BorderRadius.circular(12),
-                  //             ),
-                  //           ),
-                  //           child: isLoading
-                  //               ? const CircularProgressIndicator(
-                  //                   color: Colors.white,
-                  //                 )
-                  //               : const Text('Continue'),
-                  //         );
-                  //       },
-                  // )
-                  // .animate()
-                  // .fadeIn(delay: 400.ms)
-                  // .slideY(begin: 0.1, curve: Curves.easeOut),
-                ],
+                    //       builder: (context, isLoading, child) {
+                    //         return FilledButton.tonal(
+                    //           onPressed: isLoading
+                    //               ? null
+                    //               : () async {
+                    //                   if (_formKey.currentState!.validate()) {
+                    //                     final isSucc = await context
+                    //                         .read<UserProvider>()
+                    //                         .getUserInfo(
+                    //                           _nameController.text,
+                    //                           context,
+                    //                         );
+                    //                     if (isSucc) {
+                    //                       Navigator.push(
+                    //                         context,
+                    //                         MaterialPageRoute(
+                    //                           builder: (context) =>
+                    //                               const MenuPage(),
+                    //                         ),
+                    //                       );
+                    //                     }
+                    //                   }
+                    //                 },
+
+                    //           style: FilledButton.styleFrom(
+                    //             minimumSize: const Size(double.infinity, 50),
+                    //             shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(12),
+                    //             ),
+                    //           ),
+                    //           child: isLoading
+                    //               ? const CircularProgressIndicator(
+                    //                   color: Colors.white,
+                    //                 )
+                    //               : const Text('Continue'),
+                    //         );
+                    //       },
+                    // )
+                    // .animate()
+                    // .fadeIn(delay: 400.ms)
+                    // .slideY(begin: 0.1, curve: Curves.easeOut),
+                  ],
+                ),
               ),
             ),
           ),
