@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lottie/lottie.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutterarchi/providers/authProv.dart' show AuthProvider;
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -33,53 +35,9 @@ class WelcomePage extends StatelessWidget {
                   ),
 
                   _Username(),
+                  _Password(),
                   SizedBox(height: screenHeight * 0.03),
-
-                  // Submit Button with Loading State
-                  // Selector<UserProvider, bool>(
-                  //       selector: (_, provider) => provider.isLoading,
-
-                  //       builder: (context, isLoading, child) {
-                  //         return FilledButton.tonal(
-                  //           onPressed: isLoading
-                  //               ? null
-                  //               : () async {
-                  //                   if (_formKey.currentState!.validate()) {
-                  //                     final isSucc = await context
-                  //                         .read<UserProvider>()
-                  //                         .getUserInfo(
-                  //                           _nameController.text,
-                  //                           context,
-                  //                         );
-                  //                     if (isSucc) {
-                  //                       Navigator.push(
-                  //                         context,
-                  //                         MaterialPageRoute(
-                  //                           builder: (context) =>
-                  //                               const MenuPage(),
-                  //                         ),
-                  //                       );
-                  //                     }
-                  //                   }
-                  //                 },
-
-                  //           style: FilledButton.styleFrom(
-                  //             minimumSize: const Size(double.infinity, 50),
-                  //             shape: RoundedRectangleBorder(
-                  //               borderRadius: BorderRadius.circular(12),
-                  //             ),
-                  //           ),
-                  //           child: isLoading
-                  //               ? const CircularProgressIndicator(
-                  //                   color: Colors.white,
-                  //                 )
-                  //               : const Text('Continue'),
-                  //         );
-                  //       },
-                  // )
-                  // .animate()
-                  // .fadeIn(delay: 400.ms)
-                  // .slideY(begin: 0.1, curve: Curves.easeOut),
+                  _SubmitButton(),
                 ],
               ),
             ),
@@ -173,48 +131,100 @@ class __CatLottieState extends State<_CatLottie> {
   }
 }
 
-class _Username extends StatefulWidget {
-  const _Username();
-
-  @override
-  State<_Username> createState() => _UsernameState();
-}
-
-class _UsernameState extends State<_Username> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
-  }
-
+class _Username extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child:
-          TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Enter your name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Form(
+        key: auth.usernameFormKey,
+        child:
+            TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter your name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(Icons.person),
+                    filled: true,
                   ),
-                  prefixIcon: const Icon(Icons.person),
-                  filled: true,
+                  onChanged: auth.setUsername,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                )
+                .animate()
+                .fadeIn(delay: 300.ms)
+                .slideX(begin: -0.5, curve: Curves.easeOut),
+      ),
+    );
+  }
+}
+
+class _Password extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Form(
+        key: auth.passwordFormKey,
+        child:
+            TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter your password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(Icons.lock),
+                    filled: true,
+                  ),
+                  onChanged: auth.setPassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                )
+                .animate()
+                .fadeIn(delay: 300.ms)
+                .slideX(begin: -0.5, curve: Curves.easeOut),
+      ),
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Selector<AuthProvider, bool>(
+      selector: (_, provider) => provider.isLoading,
+      builder: (context, isLoading, child) => FilledButton(
+        onPressed: () => isLoading
+            ? null
+            : Provider.of<AuthProvider>(context, listen: false).submit(context),
+        style: FilledButton.styleFrom(
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
               )
-              .animate()
-              .fadeIn(delay: 300.ms)
-              .slideX(begin: -0.5, curve: Curves.easeOut),
+            : const Text('Submit'),
+      ),
     );
   }
 }

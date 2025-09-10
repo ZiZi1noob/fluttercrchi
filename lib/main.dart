@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import "package:flutterarchi/widgets/welcomePage.dart" show WelcomePage;
+import 'package:flutterarchi/providers/authProv.dart' show AuthProvider;
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +12,9 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
+    child: MaterialApp(
       debugShowMaterialGrid: false,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -31,9 +34,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
       home: const WelcomePage(),
-    );
-  }
+    ),
+  );
 }
